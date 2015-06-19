@@ -45,6 +45,7 @@ namespace Metrics.Tests.Json
         private readonly TimerValue timerValue;
 
         private readonly GaugeValueSource gauge = new GaugeValueSource("test", Provider(0.5), Unit.MegaBytes, MetricTags.None);
+        private readonly BarGaugeValueSource bargauge = new BarGaugeValueSource("test", Provider(0.5), Unit.MegaBytes, 100, MetricTags.None);
         private readonly CounterValueSource counter;
         private readonly MeterValueSource meter;
         private readonly HistogramValueSource histogram;
@@ -64,7 +65,7 @@ namespace Metrics.Tests.Json
 
             this.data = new MetricsData("test", new DateTime(2014, 2, 17), new[] { new EnvironmentEntry("name", "1") },
                 new[] { gauge }, new[] { counter }, new[] { meter }, new[] { histogram }, new[] { timer },
-                    Enumerable.Empty<MetricsData>()
+                    Enumerable.Empty<MetricsData>(), new[] { bargauge }
             );
             this.jsonContext = JsonMetricsContext.FromContext(this.data, "1");
         }

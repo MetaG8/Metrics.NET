@@ -45,6 +45,7 @@ namespace Metrics
         /// <param name="valueProvider">Function used to build a custom instance.</param>
         /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
         void Gauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags = default(MetricTags));
+        void BarGauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, double ymax, MetricTags tags = default(MetricTags));
 
         /// <summary>
         /// Register a custom Counter instance

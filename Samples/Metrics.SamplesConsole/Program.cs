@@ -11,7 +11,7 @@ namespace Metrics.SamplesConsole
             //Metric.CompletelyDisableMetrics();
 
             Metric.Config
-                .WithHttpEndpoint("http://localhost:1234/metrics/")
+                .WithHttpEndpoint("http://localhost:9123/metrics/")
                 .WithAllCounters()
                 .WithInternalMetrics()
                 .WithReporting(config => config
@@ -41,6 +41,8 @@ namespace Metrics.SamplesConsole
                 Metric.Gauge("& AmpGauge", () => 1, Unit.None);
                 Metric.Gauge("()[]{} ParantesisGauge", () => 1, Unit.None);
                 Metric.Gauge("Gauge With No Value", () => double.NaN, Unit.None);
+
+                Metric.BarGauge("mytestbg", () => 10, "bla", 98);
 
                 //Metric.Gauge("Gauge Resulting in division by zero", () => 5 / 0.0, Unit.None);
 

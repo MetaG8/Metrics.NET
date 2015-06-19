@@ -9,7 +9,8 @@ namespace Metrics.MetricData
         Counter,
         Meter,
         Histogram,
-        Timer
+        Timer,
+        BarGauge
     }
 
     public interface MetricsFilter : Utils.IHideObjectMembers
@@ -21,6 +22,7 @@ namespace Metrics.MetricData
         bool IsMatch(MeterValueSource meter);
         bool IsMatch(HistogramValueSource histogram);
         bool IsMatch(TimerValueSource timer);
+        bool IsMatch(BarGaugeValueSource bargauge);
     }
 
     public class Filter : MetricsFilter
@@ -37,6 +39,7 @@ namespace Metrics.MetricData
             public bool IsMatch(MeterValueSource meter) { return true; }
             public bool IsMatch(HistogramValueSource histogram) { return true; }
             public bool IsMatch(TimerValueSource timer) { return true; }
+            public bool IsMatch(BarGaugeValueSource bargauge) { return true; }
         }
 
         public static MetricsFilter All = new NoOpFilter();
@@ -139,6 +142,14 @@ namespace Metrics.MetricData
             }
 
             return true;
+        }
+        public bool IsMatch(BarGaugeValueSource bargauge)
+        {
+            if (types != null && !types.Contains(MetricType.BarGauge))
+            {
+                return false;
+            }
+            return IsNameMatch(bargauge.Name);
         }
     }
 }

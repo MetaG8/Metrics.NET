@@ -40,6 +40,11 @@ namespace Metrics.Reporters
             Write("Gauge", name, GaugeValues(value, unit));
         }
 
+        protected override void ReportBarGauge(string name, double value, Unit unit, double ymax, MetricTags tags)
+        {
+            Write("BarGauge", name, BarGaugeValues(value, unit, ymax));
+        }
+
         protected override void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags)
         {
             Write("Counter", name, CounterValues(value.Count, unit));
@@ -78,6 +83,17 @@ namespace Metrics.Reporters
         private static IEnumerable<Value> GaugeValues(double gaugeValue, Unit unit)
         {
             yield return new Value("Value", gaugeValue);
+
+            if (!string.IsNullOrEmpty(unit.Name))
+            {
+                yield return new Value("Unit", unit.Name);
+            }
+        }
+
+        private static IEnumerable<Value> BarGaugeValues(double barGaugeValue, Unit unit, double ymax)
+        {
+            yield return new Value("Value", barGaugeValue);
+            yield return new Value("YMax", ymax);
 
             if (!string.IsNullOrEmpty(unit.Name))
             {

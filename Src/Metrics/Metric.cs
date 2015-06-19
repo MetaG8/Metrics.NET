@@ -114,6 +114,20 @@ namespace Metrics
         }
 
         /// <summary>
+        /// A bargauge is the simplest metric type. It just returns a value. This metric is suitable for instantaneous values.
+        /// </summary>
+        /// <param name="name">Name of this bargauge metric. Must be unique across all bargauges in this context.</param>
+        /// <param name="valueProvider">Function that returns the value for the bargauge.</param>
+        /// <param name="unit">Description of want the value represents ( Unit.Requests , Unit.Items etc ) .</param>
+        /// <param name="ymax">maximum value of the y-axis.</param>
+        /// <param name="tags">Optional set of tags that can be associated with the metric.</param>
+        /// <returns>Reference to the gauge</returns>
+        public static void BarGauge(string name, Func<double> valueProvider, Unit unit, double ymax, MetricTags tags = default(MetricTags))
+        {
+            globalContext.BarGauge(name, valueProvider, unit, ymax, tags);
+        }
+
+        /// <summary>
         /// A meter measures the rate at which a set of events occur, in a few different ways. 
         /// This metric is suitable for keeping a record of now often something happens ( error, request etc ).
         /// </summary>

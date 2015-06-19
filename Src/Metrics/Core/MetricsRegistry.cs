@@ -11,6 +11,7 @@ namespace Metrics.Core
         IEnumerable<MeterValueSource> Meters { get; }
         IEnumerable<HistogramValueSource> Histograms { get; }
         IEnumerable<TimerValueSource> Timers { get; }
+        IEnumerable<BarGaugeValueSource> BarGauges { get; }
     }
 
     public interface MetricsRegistry
@@ -18,6 +19,8 @@ namespace Metrics.Core
         RegistryDataProvider DataProvider { get; }
 
         void Gauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags);
+
+        void BarGauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, double ymax, MetricTags tags);
 
         Counter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags)
             where T : CounterImplementation;

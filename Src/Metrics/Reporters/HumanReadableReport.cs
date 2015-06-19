@@ -39,6 +39,12 @@ namespace Metrics.Reporters
             this.WriteValue("value", unit.FormatValue(value));
         }
 
+        protected override void ReportBarGauge(string name, double value, Unit unit, double ymax, MetricTags tags)
+        {
+            this.WriteMetricName(name);
+            this.WriteValue("value", unit.FormatValue(value));
+        }
+
         protected override void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags)
         {
             this.WriteMetricName(name);

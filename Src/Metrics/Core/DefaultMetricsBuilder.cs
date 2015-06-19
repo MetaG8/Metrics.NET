@@ -16,6 +16,10 @@ namespace Metrics.Core
         {
             return new FunctionGauge(valueProvider);
         }
+        public MetricValueProvider<double> BuildBarGauge(string name, Unit unit, Func<double> valueProvider, double ymax)
+        {
+            return new BarGaugeMetric(valueProvider);
+        }
 
         public CounterImplementation BuildCounter(string name, Unit unit)
         {

@@ -45,7 +45,8 @@ namespace Metrics.Core
                     this.registryDataProvider.Meters,
                     this.registryDataProvider.Histograms,
                     this.registryDataProvider.Timers,
-                    this.childProviders().Select(p => p.CurrentMetricsData));
+                    this.childProviders().Select(p => p.CurrentMetricsData),
+                    this.registryDataProvider.BarGauges);
             }
         }
     }

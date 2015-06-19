@@ -36,6 +36,14 @@ namespace Metrics.Graphite
             }
         }
 
+        protected override void ReportBarGauge(string name, double value, Unit unit, double ymax, MetricTags tags)
+        {
+            if (!double.IsNaN(value) && !double.IsInfinity(value))
+            {
+                Send(Name(name, unit), value);
+            }
+        }
+
         protected override void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags)
         {
             if (value.Items.Length == 0)

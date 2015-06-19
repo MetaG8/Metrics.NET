@@ -42,6 +42,7 @@ namespace Metrics.Core
             public IEnumerable<MeterValueSource> Meters { get { yield break; } }
             public IEnumerable<HistogramValueSource> Histograms { get { yield break; } }
             public IEnumerable<TimerValueSource> Timers { get { yield break; } }
+            public IEnumerable<BarGaugeValueSource> BarGauges { get { yield break; } }
         }
 
         public RegistryDataProvider DataProvider { get { return NullMetric.Instance; } }
@@ -50,6 +51,7 @@ namespace Metrics.Core
         public void ResetMetricsValues() { }
 
         public void Gauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, MetricTags tags) { }
+        public void BarGauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, double ymax, MetricTags tags) { }
 
         public Counter Counter<T>(string name, Func<T> builder, Unit unit, MetricTags tags) where T : CounterImplementation
         {

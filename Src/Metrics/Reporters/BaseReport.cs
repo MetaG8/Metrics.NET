@@ -40,6 +40,7 @@ namespace Metrics.Reporters
             ReportSection("Meters", data.Meters, m => ReportMeter(FormatMetricName(contextName, m), m.Value, m.Unit, m.RateUnit, m.Tags));
             ReportSection("Histograms", data.Histograms, h => ReportHistogram(FormatMetricName(contextName, h), h.Value, h.Unit, h.Tags));
             ReportSection("Timers", data.Timers, t => ReportTimer(FormatMetricName(contextName, t), t.Value, t.Unit, t.RateUnit, t.DurationUnit, t.Tags));
+            ReportSection("BarGauges", data.BarGauges, bg => ReportBarGauge(FormatMetricName(contextName, bg), bg.Value, bg.Unit, bg.YMax, bg.Tags));
 
             var stack = Enumerable.Concat(contextStack, new[] { data.Context });
             foreach (var child in data.ChildMetrics)
@@ -63,6 +64,7 @@ namespace Metrics.Reporters
         protected virtual void ReportEnvironment(string name, IEnumerable<EnvironmentEntry> environment) { }
 
         protected abstract void ReportGauge(string name, double value, Unit unit, MetricTags tags);
+        protected abstract void ReportBarGauge(string name, double value, Unit unit, double ymax, MetricTags tags);
         protected abstract void ReportCounter(string name, CounterValue value, Unit unit, MetricTags tags);
         protected abstract void ReportMeter(string name, MeterValue value, Unit unit, TimeUnit rateUnit, MetricTags tags);
         protected abstract void ReportHistogram(string name, HistogramValue value, Unit unit, MetricTags tags);

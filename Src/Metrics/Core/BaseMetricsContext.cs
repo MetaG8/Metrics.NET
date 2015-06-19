@@ -95,6 +95,16 @@ namespace Metrics.Core
             this.registry.Gauge(name, valueProvider, unit, tags);
         }
 
+        public void BarGauge(string name, Func<double> valueProvider, Unit unit, double ymax, MetricTags tags)
+        {
+            this.BarGauge(name, () => this.metricsBuilder.BuildBarGauge(name, unit, valueProvider, ymax), unit, ymax, tags);
+        }
+
+        public void BarGauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, double ymax, MetricTags tags)
+        {
+            this.registry.BarGauge(name, valueProvider, unit, ymax, tags);
+        }
+
         public Counter Counter(string name, Unit unit, MetricTags tags)
         {
             return this.Counter(name, unit, () => this.metricsBuilder.BuildCounter(name, unit), tags);

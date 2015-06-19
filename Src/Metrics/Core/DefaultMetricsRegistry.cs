@@ -68,6 +68,7 @@ namespace Metrics.Core
         }
 
         private readonly MetricMetaCatalog<MetricValueProvider<double>, GaugeValueSource, double> gauges = new MetricMetaCatalog<MetricValueProvider<double>, GaugeValueSource, double>();
+        private readonly MetricMetaCatalog<MetricValueProvider<double>, BarGaugeValueSource, double> bargauges = new MetricMetaCatalog<MetricValueProvider<double>, BarGaugeValueSource, double>();
         private readonly MetricMetaCatalog<Counter, CounterValueSource, CounterValue> counters = new MetricMetaCatalog<Counter, CounterValueSource, CounterValue>();
         private readonly MetricMetaCatalog<Meter, MeterValueSource, MeterValue> meters = new MetricMetaCatalog<Meter, MeterValueSource, MeterValue>();
         private readonly MetricMetaCatalog<Histogram, HistogramValueSource, HistogramValue> histograms =
@@ -76,7 +77,7 @@ namespace Metrics.Core
 
         public DefaultMetricsRegistry()
         {
-            this.DataProvider = new DefaultRegistryDataProvider(() => this.gauges.All, () => this.counters.All, () => this.meters.All, () => this.histograms.All, () => this.timers.All);
+            this.DataProvider = new DefaultRegistryDataProvider(() => this.gauges.All, () => this.counters.All, () => this.meters.All, () => this.histograms.All, () => this.timers.All, () => this.bargauges.All);
         }
 
         public RegistryDataProvider DataProvider { get; private set; }
@@ -87,6 +88,15 @@ namespace Metrics.Core
             {
                 MetricValueProvider<double> gauge = valueProvider();
                 return Tuple.Create(gauge, new GaugeValueSource(name, gauge, unit, tags));
+            });
+        }
+
+        public void BarGauge(string name, Func<MetricValueProvider<double>> valueProvider, Unit unit, double ymax, MetricTags tags)
+        {
+            this.bargauges.GetOrAdd(name, () =>
+            {
+                MetricValueProvider<double> bargauge = valueProvider();
+                return Tuple.Create(bargauge, new BarGaugeValueSource(name, bargauge, unit, ymax, tags));
             });
         }
 
@@ -133,6 +143,7 @@ namespace Metrics.Core
         public void ClearAllMetrics()
         {
             this.gauges.Clear();
+            this.bargauges.Clear();
             this.counters.Clear();
             this.meters.Clear();
             this.histograms.Clear();
@@ -142,6 +153,7 @@ namespace Metrics.Core
         public void ResetMetricsValues()
         {
             this.gauges.Reset();
+            this.bargauges.Reset();
             this.counters.Reset();
             this.meters.Reset();
             this.histograms.Reset();

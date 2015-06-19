@@ -9,6 +9,7 @@ namespace Metrics.Core
     {
         MetricValueProvider<double> BuildPerformanceCounter(string name, Unit unit, string counterCategory, string counterName, string counterInstance);
         MetricValueProvider<double> BuildGauge(string name, Unit unit, Func<double> valueProvider);
+        MetricValueProvider<double> BuildBarGauge(string name, Unit unit, Func<double> valueProvider, double ymax);
         CounterImplementation BuildCounter(string name, Unit unit);
         MeterImplementation BuildMeter(string name, Unit unit, TimeUnit rateUnit);
         HistogramImplementation BuildHistogram(string name, Unit unit, SamplingType samplingType);

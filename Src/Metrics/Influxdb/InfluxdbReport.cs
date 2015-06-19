@@ -102,6 +102,14 @@ namespace Metrics.Influxdb
             }
         }
 
+        protected override void ReportBarGauge(string name, double value, Unit unit, double ymax, MetricTags tags)
+        {
+            if (!double.IsNaN(value) && !double.IsInfinity(value))
+            {
+                Pack(name, GaugeColumns, Value(value));
+            }
+        }
+
         protected override void ReportCounter(string name, MetricData.CounterValue value, Unit unit, MetricTags tags)
         {
             var itemColumns = value.Items.SelectMany(i => new[] { i.Item + " - Count", i.Item + " - Percent" });
